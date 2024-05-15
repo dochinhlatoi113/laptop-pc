@@ -34,7 +34,8 @@ route::post('/update_category/{id}', [App\Http\Controllers\CategoryController::c
 route::get('/create_category_option', [App\Http\Controllers\CategoryOptionController::class, 'CreateCategoryOption'])->name('admin.create_category_option');
 route::post('/add_category_option', [App\Http\Controllers\CategoryOptionController::class, 'AddCategoryOption'])->name('admin.add_category_option');
 route::get('/view_category_option', [App\Http\Controllers\CategoryOptionController::class, 'ViewCategoryOption'])->name('admin.view_category_option');
-
+route::post('/update_category_option/{id}', [App\Http\Controllers\CategoryOptionController::class, 'UpdateCategoryOption'])->name('admin.update_category_option');
+route::get('/delete_category_option/{id}', [App\Http\Controllers\CategoryOptionController::class, 'DeleteCategoryOption'])->name('admin.delete_category_option');
 
 
 
@@ -46,6 +47,8 @@ route::get('/delete_product/{id}', [App\Http\Controllers\ProductController::clas
 route::get('/edit_product/{id}', [App\Http\Controllers\ProductController::class, 'EditProduct'])->name('admin.edit_product');
 route::post('/update_product/{id}', [App\Http\Controllers\ProductController::class, 'UpdateProduct']);
 Route::get('/search-product', [App\Http\Controllers\ProductController::class, 'SearchProduct']);
+route::get('/view_product_category_option_json/{id}', [App\Http\Controllers\ProductController::class, 'ViewProductCategoryOptionJson'])->name('admin.view_product_category_option_json');
+
 
 /* order*/
 Route::get('/search-order', [App\Http\Controllers\OrderController::class, 'SearchOrder']);
@@ -57,6 +60,15 @@ route::get('/print-bill/{order_id}', [App\Http\Controllers\OrderController::clas
 route::get('/customers', [App\Http\Controllers\Customer::class, 'Customers']);
 route::get('/delete-user/{id}', [App\Http\Controllers\Customer::class, 'DeleteUser']);
 Route::get('/search-user', [App\Http\Controllers\Customer::class, 'SearchUser']);
+
+/** brand */
+/* customer*/
+route::get('/create_brand', [App\Http\Controllers\BrandController::class, 'CreateBrand'])->name('admin.create_brand');
+route::post('/add_brand', [App\Http\Controllers\BranchController::class, 'AddBrand']);
+route::get('/delete_brand/{id}', [App\Http\Controllers\BrandController::class, 'DeleteBrand']);
+Route::get('/search_brand', [App\Http\Controllers\BrandController::class, 'SearchBrand']);
+Route::get('/edit_brand', [App\Http\Controllers\BrandController::class, 'EditBrand']);
+Route::post('/update_brand/{id}', [App\Http\Controllers\BrandController::class, 'UpdateBrand']);
 
 /************************************************************ */
 /* User routes */

@@ -54,3 +54,4 @@ A Computer Selling Wesbsite(E-Commerce) with Laravel 10.x
 <h3>Add Product Page</h3>
 <img src='https://github.com/nazir20/Laravel-E-Commerce/blob/main/screenshots/add%20product.png'>
 
+<h3>tạo 1 tập tin tên manifest.json trong thư mục pub/builic </h3>

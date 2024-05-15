@@ -37,12 +37,16 @@ class CategoryOptionController extends Controller
      * 
      *  @return view
      */
-    public function ViewCategoryOption()
+    public function ViewCategoryOption(Request $request)
     {
         if (Auth::check()) {
             $userType = Auth::user()->usertype;
             if ($userType == 1) {
-                $categories = $this->categoryRepository->show();
+                $param = '';
+                if($request->search != ''){
+                    $param = $request->search;
+                }
+                $categories = $this->categoryRepository->getAllCategoryWithCategoryOption($param);
                 return view('admin.category.category_option', compact('categories'));                
             } else {
                 return redirect('login');
@@ -109,7 +113,7 @@ class CategoryOptionController extends Controller
      * @param  $id
      * @return view
     */
-    public function DeleteCategory($id)
+    public function DeleteCategoryOption($id)
     {
         if (Auth::check()) {
             $userType = Auth::user()->usertype;
@@ -126,41 +130,18 @@ class CategoryOptionController extends Controller
         }
 
     }
-
-     /**
-     * 
-     *
-     * @param  $id
-     * @return redirect
-    */
-    public function EditCategory($id)
-    {
-        if (Auth::check()) {
-            $userType = Auth::user()->usertype;
-            if ($userType == 1) {
-                $category = $this->categoryOptionRepository->find($id);
-                return view('admin.category.edit_category', compact('category'));
-
-            } else {
-                return redirect('login');
-            }
-        } else {
-            return redirect('login');
-        }
-
-    }
   /**
      * 
      *
      * @param  $id,Request $request
      * @return redirect
     */
-    public function UpdateCategory(Request $request ,$id)
+    public function UpdateCategoryOption(Request $request ,$id)
     {
         if (Auth::check()) {
             $userType = Auth::user()->usertype;
             if ($userType == 1) {
-                $category = $this->$categoryOptionRepository->update($id,$request->all());
+                $category = $this->categoryOptionRepository->update($id,$request->all());
                 return redirect()->back();
 
             } else {

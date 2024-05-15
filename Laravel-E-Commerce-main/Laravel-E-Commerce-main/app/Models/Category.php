@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\CategoryOption;
 
 class Category extends Model
 {
@@ -22,6 +23,9 @@ class Category extends Model
         'status', 
         'parent_id'
     ];
-
+    public function categoryOptionRelation()
+    {
+        return $this->hasmany(CategoryOption::class,'category_id');
+    }
 
 }

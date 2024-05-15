@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Category;
 
 class CategoryOption extends Model
 {
@@ -22,5 +23,8 @@ class CategoryOption extends Model
         'status', 
     ];
 
-
+    public function categoryRelation()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

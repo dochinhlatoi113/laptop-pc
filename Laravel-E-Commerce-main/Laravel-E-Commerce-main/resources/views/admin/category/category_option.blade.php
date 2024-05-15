@@ -39,22 +39,47 @@
                 <h2>Xem toàn bộ thuộc tính sản phẩm đã tạo</h2>
             </div>
             <div class="row">
+              <div class="col-sm-9">
+                  <div class="input-group-append">
+                      <a href="{{route('admin.create_category_option')}}" class="btn btn-sm btn-success" type="">Thêm thuộc tính sản phẩm sản phẩm</a>
+                  </div>                  
+              </div>   
+              <div class="col-sm-3">
+                  <div class="input-group-append">
+                  <form method="GET" action="{{ route('admin.view_category_option') }}">
+                      <input type="text" name="search" placeholder="Tìm kiếm...">
+                      <button type="submit" class="btn btn-sm btn-danger">Tìm kiếm</button>
+                  </form>
+                  </div>                  
+              </div>  
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card"> 
                         <table class="table" style="color:white;">
                             <thead>
                                 <tr>
-                                <th scope="col">Tên danh mục</th>
-                                <th scope="col">Tên thuộc tính</th>
-                                <th scope="col">Trạng thái</th>
+                                   <th scope="col">Tên danh mục</th>
+                                   <th scope="col">Tên thuộc tính</th>
                                 </tr>
                             </thead>
                             <tbody>
+                              @foreach($categories as $category)
+                                @if($category->parent_id == 0)
                                 <tr>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                    <td>{{$category->category_name}}</td>
+                                    <td>
+                                        @foreach($category->categoryOptionRelation as $option)
+                                          <form method="POST" action="{{route('admin.update_category_option',$option->id)}}"> @csrf
+                                            <div>
+                                                <input type="text" name="category_option_name" value="{{$option->category_option_name}}">
+                                                <a href="{{url('delete_category_option',$category->id)}}" class="btn btn-sm btn-danger" type="Delete">Xóa</a>
+                                                <button  class="btn btn-sm btn-warning" type="Edit">Sửa</button>
+                                            </div>
+                                          </form>  
+                                        @endforeach
+                                    </td>
                                 </tr>
+                                @endif
+                              @endforeach
                             </tbody>
                         </table>
                     </div>

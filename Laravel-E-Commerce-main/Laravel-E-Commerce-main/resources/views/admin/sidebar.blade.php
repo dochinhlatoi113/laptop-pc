@@ -88,6 +88,20 @@
                 <span class="menu-title">Orders</span>
             </a>
         </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic-brand" aria-expanded="false" aria-controls="ui-basic-brand">
+              <span class="menu-icon">
+                <i class="mdi mdi-earth"></i>
+              </span>
+              <span class="menu-title">Thương hiệu</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-basic-brand">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{{route('admin.create_brand')}}">Thêm thương hiệu</a></li>
+              </ul>
+            </div>
+        </li>
     </ul>
 </nav>
 <!-- sidebar ends -->

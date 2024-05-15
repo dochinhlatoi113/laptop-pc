@@ -11,47 +11,41 @@ use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 use PDF;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Repositories\Product\ProductRepositoryInterface;
+use App\Repositories\Category\CategoryRepositoryInterface;
 
 class ProductController extends Controller
 {
-    
+     /**
+     * @var ProductRepositoryInterface|\App\Repositories\Repository
+     */
+    protected $productRepo;
+    protected $categoryRepo;
 
+    public function __construct(ProductRepositoryInterface $productRepo,CategoryRepositoryInterface $categoryRepo)
+    {
+        $this->productRepo = $productRepo;
+        $this->categoryRepo = $categoryRepo;
+    }
+
+    /**
+     * 
+     *  @return view
+     */
     public function AddProduct(Request $request)
     {
         if (Auth::check()) {
             $userType = Auth::user()->usertype;
             if ($userType == 1) {
-
-                $product = new Product();
-                $product->title = $request->title;
-                $product->category = $request->category;
-                $product->quantity = $request->quantity;
-                $product->price = $request->price;
-                $product->discount_price = $request->discount_price;
-                $product->screen_size = $request->screen_size;
-                $product->screen_resolution = $request->screen_resolution;
-                $product->screen_refresh_rate = $request->screen_refresh_rate;
-                $product->device_weight = $request->device_weight;
-                $product->graphics_type = $request->graphics_type;
-                $product->graphics_card_memory = $request->graphics_card_memory;
-                $product->ssd_capacity = $request->ssd_capacity;
-                $product->operating_system = $request->operating_system;
-                $product->processor = $request->processor;
-                $product->processor_generation = $request->processor_generation;
-                $product->processor_type = $request->processor_type;
-                $product->processor_speed = $request->processor_speed;
-                $product->ram = $request->ram;
-                $product->keyboard = $request->keyboard;
-                $product->color = $request->color;
-                $image = $request->image;
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $request->image->move('products_images', $imageName);
-                $product->image = $imageName;
-                $product->save();
-
+                $data = $request->all();
+                $category = $this->productRepo->create($data);
                 Alert::success('Product Added Successfully!', 'You have added a new product');
-                return redirect()->route('admin.show_product');
-
+                return redirect()->back()->with('message', 'Category Added Successfully');
+                // $image = $request->image;
+                // $imageName = time() . '.' . $image->getClientOriginalExtension();
+                // $request->image->move('products_images', $imageName);
+                // $product->image = $imageName;
+                // $product->save();
             } else {
                 return redirect('login');
             }
@@ -66,7 +60,6 @@ class ProductController extends Controller
         if (Auth::check()) {
             $userType = Auth::user()->usertype;
             if ($userType == 1) {
-
                 $categories = Category::all();
                 return view('admin.product.add_product', compact('categories'));
             } else {
@@ -202,5 +195,9 @@ class ProductController extends Controller
         }
     }
 
-   
+    public function ViewProductCategoryOptionJson($id) {
+
+        $category = $this->categoryRepo->getCategoryOptionWithCategoryById($id);
+        return response()->json($category);
+    }
 }

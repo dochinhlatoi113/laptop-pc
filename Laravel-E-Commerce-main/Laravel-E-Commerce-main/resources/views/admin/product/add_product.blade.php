@@ -40,7 +40,7 @@
                 <div class="col-12 grid-margin">
                     <div class="card">
                         <form action="{{route('admin.add_product')}}" method="post" enctype="multipart/form-data">
-                            @csrf
+                         @csrf
                         <div class="card-body">
                             <h4 class="card-title">Add Product Form</h4>
                             <p class="card-description"> Computer details </p>
@@ -55,7 +55,19 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label">Category</label>
+                                        <label class="col-sm-3 col-form-label">Danh mục sản phẩm</label>
+                                        <div class="col-sm-9">
+                                            <select name="category" class="form-control" required style="color: #fff">
+                                                @foreach ($categories as $category)
+                                                <option value="{{$category->category_name}}">{{$category->category_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Thương hiệu sản phẩm</label>
                                         <div class="col-sm-9">
                                             <select name="category" class="form-control" required style="color: #fff">
                                                 @foreach ($categories as $category)
@@ -70,6 +82,37 @@
                                         <label class="col-sm-3 col-form-label">Giá</label>
                                         <div class="col-sm-9">
                                             <input name="title" type="text" class="form-control" style="color: #fff" required/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Chọn thuộc tính cho sản phẩm</label>
+                                        <div class="col-sm-9">
+                                            <select id="categorySelect" class="form-select" aria-label="Default select example">
+                                                <option value ="">chọn</option>
+                                                @foreach($categories as $category)
+                                                    @if($category->parent_id == 0)
+                                                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                                    @endif
+                                                @endforeach 
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"> 
+                                    <div class="form-group"  id="categoryOptions"> 
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Product Image</label>
+                                        <div class="input-group col-sm-9">
+                                            <img id="showImage" style="width: 40%;border-radius: 3%;" src="/admin/assets/images/no_image.jpg" alt="product_image">
                                         </div>
                                     </div>
                                 </div>
@@ -92,16 +135,6 @@
                                         <label class="col-sm-3 col-form-label"></label>
                                         <div class="input-group col-sm-9">
                                             <button type="submit" class="btn btn-info">Add Product</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label">Product Image</label>
-                                        <div class="input-group col-sm-9">
-                                            <img id="showImage" style="width: 40%;border-radius: 3%;" src="/admin/assets/images/no_image.jpg" alt="product_image">
                                         </div>
                                     </div>
                                 </div>
@@ -153,6 +186,31 @@
                 reader.readAsDataURL(e.target.files['0']);
             });
         });
+        //show category-option 
+        $('#categorySelect').on('change', function() {
+            var categoryId = $(this).val();
+            if (categoryId) {
+                $.ajax({
+                    url: '/view_product_category_option_json/' + categoryId,
+                    type: 'GET',
+                    success: function(data) {
+                        var optionsHtml = '';
+                        data.category_option_relation.forEach(function(option) {
+                            var categoryOptionName = option.category_option_name;
+                            optionsHtml += '        <label class="col-form-label">' + categoryOptionName + '</label>';
+                            optionsHtml += '        <div class="col-sm-12">';
+                            optionsHtml += '            <input class="form-control" style="color: #fff" type="text">';
+                            optionsHtml += '        </div>';     
+                        });
+                        $('#categoryOptions').html(optionsHtml);
+                    }
+                });
+            }
+            else {
+                $('#categoryOptions').html('<p>Chọn danh mục để hiển thị tùy chọn</p>');
+            }
+        });
+
     </script>
   </body>
 </html>

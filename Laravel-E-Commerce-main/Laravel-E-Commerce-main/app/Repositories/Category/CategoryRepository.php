@@ -20,4 +20,20 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     {
         return $this->model->find($id);
     }
+
+    public function getAllCategoryWithCategoryOption($param)
+    {  
+        $query = $this->model->with('categoryOptionRelation');
+        if ($param != '') {
+            $query->whereHas('categoryOptionRelation', function($query) use ($param) {
+                $query->where('category_option_name', 'like', '%' . $param . '%');
+            });
+        }
+        return $query->get();
+    }
+
+    public function getCategoryOptionWithCategoryById($id)
+    {   
+        return $this->model->with('categoryOptionRelation')->find($id);
+    }
 }
